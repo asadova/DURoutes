@@ -11,12 +11,18 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private ToggleButton drawRouteButton;
     private boolean drawRouteButtonState;  //Captures state of drawRouteButton
+
+    private FirebaseDatabase routesDB;
+    private DatabaseReference routesReference;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +51,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //Initialize interface
         drawRouteButton = (ToggleButton)findViewById(R.id.drawRouteButton);
         drawRouteButtonState = false;
+
+        // CONNECT WITH FIREBASE
+        routesDB = FirebaseDatabase.getInstance();
+        routesReference = routesDB.getReference().child("routes");
 
         //Interface listeners
         drawRouteButton.setOnClickListener(new View.OnClickListener() {
