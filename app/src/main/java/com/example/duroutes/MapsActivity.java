@@ -33,7 +33,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private FirebaseDatabase routesDB;
     private DatabaseReference routesReference;
     private Marker currentMarker;
-    private Marker centerMarker;
+    private LatLng cameraCenter;
 
 
     @Override
@@ -73,7 +73,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         //Initialize currentMarker
         currentMarker = null;
-        centerMarker = mMap.addMarker(new MarkerOptions().position(mMap.getCameraPosition().target));
+        cameraCenter = mMap.getCameraPosition().target;
 
 
         //Interface listeners
@@ -112,7 +112,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onMapLongClick(LatLng latLng) {
                 if (drawRouteButtonState) {
-                    currentMarker = mMap.addMarker(new MarkerOptions().position(centerMarker.getPosition()));
+                    currentMarker = mMap.addMarker(new MarkerOptions().position(cameraCenter));
                     List<LatLng> pointsList = newLine.getPoints();
                     pointsList.add(currentMarker.getPosition());
                     newLine.setPoints(pointsList);
@@ -123,15 +123,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
             @Override
             public void onCameraMove() {
-                centerMarker.setPosition(mMap.getCameraPosition().target);
-                if (drawRouteButtonState) changeLastPointInPolyline(newLine, centerMarker);
+                cameraCenter = mMap.getCameraPosition().target;
+                if (drawRouteButtonState && newLine.getPoints().size() != 0) changeLastPointInPolyline(newLine, cameraCenter);
             }
         });
+
     }
 
-    private void changeLastPointInPolyline(Polyline polyLine, Marker marker) {
+    private void changeLastPointInPolyline(Polyline polyLine, LatLng point) {
         List<LatLng> points = polyLine.getPoints();
-        points.set(points.size()-1, marker.getPosition());
+        points.set(points.size()-1, point);
         polyLine.setPoints(points);
     }
 
