@@ -3,6 +3,7 @@ package com.example.duroutes;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ToggleButton;
 
@@ -21,6 +22,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private ToggleButton drawRouteButton;
     private boolean drawRouteButtonState;  //Captures state of drawRouteButton
     private EditText routeName;
+    private Button saveButton;
 
     private FirebaseDatabase routesDB;
     private DatabaseReference routesReference;
@@ -54,6 +56,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         drawRouteButton = (ToggleButton)findViewById(R.id.drawRouteButton);
         drawRouteButtonState = false;
         routeName = (EditText)findViewById(R.id.routeName);
+        saveButton = (Button)findViewById(R.id.saveButton);
 
         // CONNECT WITH FIREBASE
         routesDB = FirebaseDatabase.getInstance();
@@ -67,6 +70,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     drawRouteButtonState = false;
                 } else {
                     drawRouteButtonState = true;
+                }
+            }
+        });
+
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //создали роут как объект
+
+                if (drawRouteButtonState) {
+                    Route route = new Route(routeName.getText().toString(), newLine);
+                    //чтобы публиковать в базу
+                    routesReference.push().setValue(route);  //push создаёт id
+
+
                 }
             }
         });
