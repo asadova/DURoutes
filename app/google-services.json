@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "121613722538",
+    "firebase_url": "https://duroutes.firebaseio.com",
+    "project_id": "duroutes",
+    "storage_bucket": "duroutes.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:121613722538:android:1717687e34498d7e",
+        "android_client_info": {
+          "package_name": "com.example.duroutes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "121613722538-doa59fneh16ums5dd4ctjsfccfe2gvma.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.duroutes",
+            "certificate_hash": "4465B19A0F3E2F6A256C1645B8020B8B343F0B88"
+          }
+        },
+        {
+          "client_id": "121613722538-h3e8m9b30djnf3o6fml9520o1grkcome.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjFOvmYyEITXswukQSafiac1v-bL4XLmU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "121613722538-h3e8m9b30djnf3o6fml9520o1grkcome.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
