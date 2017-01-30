@@ -2,6 +2,8 @@ package com.example.duroutes;
 
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ToggleButton;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -13,6 +15,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private ToggleButton drawRouteButton;
+    private boolean drawRouteButtonState;  //Captures state of drawRouteButton
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +41,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+
+        //Initialize interface
+        drawRouteButton = (ToggleButton)findViewById(R.id.drawRouteButton);
+        drawRouteButtonState = false;
+
+        //Interface listeners
+        drawRouteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (drawRouteButtonState) {
+                    drawRouteButtonState = false;
+                } else {
+                    drawRouteButtonState = true;
+                }
+            }
+        });
 
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(-34, 151);
