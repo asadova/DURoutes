@@ -3,6 +3,7 @@ package com.example.duroutes;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ToggleButton;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -19,6 +20,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private ToggleButton drawRouteButton;
     private boolean drawRouteButtonState;  //Captures state of drawRouteButton
+    private EditText routeName;
 
     private FirebaseDatabase routesDB;
     private DatabaseReference routesReference;
@@ -51,6 +53,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //Initialize interface
         drawRouteButton = (ToggleButton)findViewById(R.id.drawRouteButton);
         drawRouteButtonState = false;
+        routeName = (EditText)findViewById(R.id.routeName);
 
         // CONNECT WITH FIREBASE
         routesDB = FirebaseDatabase.getInstance();
