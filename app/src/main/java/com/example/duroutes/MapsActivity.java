@@ -112,10 +112,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onMapLongClick(LatLng latLng) {
                 if (drawRouteButtonState) {
-                    List<LatLng> pointsList = newLine.getPoints();
-                    pointsList.add(centerMarker.getPosition());
-                    newLine.setPoints(pointsList);
                     currentMarker = mMap.addMarker(new MarkerOptions().position(centerMarker.getPosition()));
+                    List<LatLng> pointsList = newLine.getPoints();
+                    pointsList.add(currentMarker.getPosition());
+                    newLine.setPoints(pointsList);
                 }
             }
         });
@@ -124,7 +124,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onCameraMove() {
                 centerMarker.setPosition(mMap.getCameraPosition().target);
-                if (drawRouteButtonState) changeLastPointInPolyline(newLine, currentMarker);
+                if (drawRouteButtonState) changeLastPointInPolyline(newLine, centerMarker);
             }
         });
     }
