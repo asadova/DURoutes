@@ -1,5 +1,6 @@
 package com.example.duroutes;
 
+import android.graphics.Color;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -14,8 +15,11 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -71,10 +75,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 if (drawRouteButtonState) {
                     drawRouteButtonState = false;
                 } else {
+                    newLine = mMap.addPolyline(new PolylineOptions()
+                    .width(5)
+                    .color(Color.RED));
                     drawRouteButtonState = true;
                 }
             }
         });
+
+
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,6 +96,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     routesReference.push().setValue(route);  //push создаёт id
 
 
+                }
+            }
+        });
+
+        mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+            @Override
+            public void onMapLongClick(LatLng latLng) {
+                if (drawRouteButtonState) {
+                    List<LatLng> pointsList = newLine.getPoints();
+                    pointsList.add(latLng);
+                    newLine.setPoints(pointsList);
+                    mMap.addMarker(new MarkerOptions().position(latLng));
                 }
             }
         });
