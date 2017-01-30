@@ -8,11 +8,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ToggleButton;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -32,6 +32,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private FirebaseDatabase routesDB;
     private DatabaseReference routesReference;
+    private Marker currentMarker;
+    private Marker centerMarker;
 
 
     @Override
@@ -49,7 +51,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
      * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
+     * we just add a currentMarker near Sydney, Australia.
      * If Google Play services is not installed on the device, the user will be prompted to install
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
@@ -60,6 +62,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         //Initialize interface
         drawRouteButton = (ToggleButton)findViewById(R.id.drawRouteButton);
+        drawRouteButton.setChecked(false);
         drawRouteButtonState = false;
         routeName = (EditText)findViewById(R.id.routeName);
         saveButton = (Button)findViewById(R.id.saveButton);
@@ -67,6 +70,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // CONNECT WITH FIREBASE
         routesDB = FirebaseDatabase.getInstance();
         routesReference = routesDB.getReference().child("routes");
+
+        //Initialize currentMarker
+        currentMarker = null;
+        centerMarker = mMap.addMarker(new MarkerOptions().position(mMap.getCameraPosition().target));
+
 
         //Interface listeners
         drawRouteButton.setOnClickListener(new View.OnClickListener() {
@@ -105,11 +113,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onMapLongClick(LatLng latLng) {
                 if (drawRouteButtonState) {
                     List<LatLng> pointsList = newLine.getPoints();
-                    pointsList.add(latLng);
+                    pointsList.add(centerMarker.getPosition());
                     newLine.setPoints(pointsList);
-                    mMap.addMarker(new MarkerOptions().position(latLng));
+                    currentMarker = mMap.addMarker(new MarkerOptions().position(centerMarker.getPosition()));
                 }
             }
         });
+
+        mMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
+            @Override
+            public void onCameraMove() {
+                centerMarker.setPosition(mMap.getCameraPosition().target);
+                if (drawRouteButtonState) changeLastPointInPolyline(newLine, currentMarker);
+            }
+        });
     }
+
+    private void changeLastPointInPolyline(Polyline polyLine, Marker marker) {
+        List<LatLng> points = polyLine.getPoints();
+        points.set(points.size()-1, marker.getPosition());
+        polyLine.setPoints(points);
+    }
+
 }
