@@ -16,6 +16,9 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -91,6 +94,34 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
+        routesReference.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Route route = dataSnapshot.getValue(Route.class);
+                mMap.addPolyline(new PolylineOptions().width(15).color(Color.BLUE))
+                    .setPoints(route.latLngList());
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
 
         saveButton.setOnClickListener(new View.OnClickListener() {
@@ -99,7 +130,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 //создали роут как объект
 
                 if (drawRouteButtonState) {
-                    Route route = new Route(routeName.getText().toString(), newLine);
+                    Route route = new Route(routeName.getText().toString(), newLine.getPoints());
                     //чтобы публиковать в базу
                     routesReference.push().setValue(route);  //push создаёт id
 
@@ -107,6 +138,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
             }
         });
+
 
         mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
