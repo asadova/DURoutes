@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,6 +26,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -42,6 +44,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private LatLng cameraCenter;
 
     private Toolbar toolbar;
+    private Spinner spinner;
+    private ArrayList<Route> routesData;
+    private ArrayAdapter<Route> adapter;
 
 
     @Override
@@ -69,10 +74,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
         toolbar = (Toolbar)findViewById(R.id.toolbar);
 
-        String[] data = {"one", "two", "three", "four", "five"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, data);
+        routesData = new ArrayList<>();
+        adapter = new ArrayAdapter<>(this,
+                                     android.R.layout.simple_spinner_item,
+                                     routesData);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        Spinner spinner = (Spinner)findViewById(R.id.spinner2);
+        spinner = (Spinner)findViewById(R.id.spinner2);
         spinner.setAdapter(adapter);
 
         //Initialize interface
@@ -110,8 +117,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Route route = dataSnapshot.getValue(Route.class);
-                mMap.addPolyline(new PolylineOptions().width(15).color(Color.BLUE))
-                    .setPoints(route.latLngList());
+                adapter.add(route);
             }
 
             @Override
@@ -172,6 +178,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                Route route = adapter.getItem(position);
+                addRouteToMap(route);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+    }
+
+    private void addRouteToMap(Route route) {
+        Polyline line = mMap.addPolyline(new PolylineOptions().color(Color.GREEN).width(10));
+        line.setPoints(route.latLngList());
     }
 
     private void changeLastPointInPolyline(Polyline polyLine, LatLng point) {

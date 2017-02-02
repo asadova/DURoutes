@@ -25,6 +25,11 @@ public class Route {
         this.points = convertLatLngToPoints(latLngs);
     }
 
+    @Override
+    public String toString() {
+        return routeName;
+    }
+
     public String getRouteName() {
         return routeName;
     }
