@@ -4,9 +4,12 @@ import android.graphics.Color;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.ToggleButton;
+import android.widget.Toolbar;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -38,6 +41,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Marker currentMarker;
     private LatLng cameraCenter;
 
+    private Toolbar toolbar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +67,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        toolbar = (Toolbar)findViewById(R.id.toolbar);
+
+        String[] data = {"one", "two", "three", "four", "five"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, data);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        Spinner spinner = (Spinner)findViewById(R.id.spinner2);
+        spinner.setAdapter(adapter);
 
         //Initialize interface
         drawRouteButton = (ToggleButton)findViewById(R.id.drawRouteButton);

@@ -57,4 +57,9 @@ tools:context="com.example.duroutes.MapsActivity">
         android:layout_centerHorizontal="true"
         android:id="@+id/textView3" />
 
+    <include
+        android:id="@+id/tool_bar"
+        layout="@layout/toolbar" />
+
+
 </RelativeLayout>
