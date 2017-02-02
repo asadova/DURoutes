@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 import android.widget.Toolbar;
 
@@ -33,7 +34,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private ToggleButton drawRouteButton;
-    private boolean drawRouteButtonState;  //Captures state of drawRouteButton
+      //Captures state of drawRouteButton
     private EditText routeName;
     private Button saveButton;
     private Polyline newLine;
@@ -85,7 +86,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //Initialize interface
         drawRouteButton = (ToggleButton)findViewById(R.id.drawRouteButton);
         drawRouteButton.setChecked(false);
-        drawRouteButtonState = false;
         routeName = (EditText)findViewById(R.id.routeName);
         saveButton = (Button)findViewById(R.id.saveButton);
 
@@ -97,20 +97,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         currentMarker = null;
         cameraCenter = mMap.getCameraPosition().target;
 
+        // Initial invisibility
+        saveButton.setVisibility(View.INVISIBLE);
+        routeName.setVisibility(View.INVISIBLE);
 
         //Interface listeners
         drawRouteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (drawRouteButtonState) {
-                    drawRouteButtonState = false;
-                } else {
+                if (drawRouteButton.isChecked()) {
+                    saveButton.setVisibility(View.VISIBLE);
+                    routeName.setVisibility(View.VISIBLE);
                     newLine = mMap.addPolyline(new PolylineOptions()
-                    .width(5)
-                    .color(Color.RED));
-                    drawRouteButtonState = true;
+                            .width(5)
+                            .color(Color.RED));
+                } else {
+                    saveButton.setVisibility(View.INVISIBLE);
+                    routeName.setVisibility(View.INVISIBLE);
                 }
             }
+
         });
 
         routesReference.addChildEventListener(new ChildEventListener() {
@@ -146,14 +152,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View view) {
                 //создали роут как объект
-
-                if (drawRouteButtonState) {
-                    Route route = new Route(routeName.getText().toString(), newLine.getPoints());
-                    //чтобы публиковать в базу
-                    routesReference.push().setValue(route);  //push создаёт id
-
-
-                }
+                     if (drawRouteButton.isChecked()) {
+                         if (routeName.getText().toString().trim().length() > 0) {
+                             Route route = new Route(routeName.getText().toString(), newLine.getPoints());
+                             //чтобы публиковать в базу
+                             routesReference.push().setValue(route);  //push создаёт id
+                             mMap.clear();
+                             routeName.setText("");
+                             drawRouteButton.setChecked(false);
+                         }  else {
+                             Toast.makeText(getApplicationContext(), "Напишите название маршрута", Toast.LENGTH_LONG).show();
+                         }
+                    }
             }
         });
 
@@ -161,7 +171,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
             public void onMapLongClick(LatLng latLng) {
-                if (drawRouteButtonState) {
+                if (drawRouteButton.isChecked()) {
                     currentMarker = mMap.addMarker(new MarkerOptions().position(cameraCenter));
                     List<LatLng> pointsList = newLine.getPoints();
                     pointsList.add(currentMarker.getPosition());
@@ -174,7 +184,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onCameraMove() {
                 cameraCenter = mMap.getCameraPosition().target;
-                if (drawRouteButtonState && newLine.getPoints().size() != 0) changeLastPointInPolyline(newLine, cameraCenter);
+                if (drawRouteButton.isChecked() && newLine.getPoints().size() != 0) changeLastPointInPolyline(newLine, cameraCenter);
             }
         });
 
@@ -193,6 +203,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
+
     private void addRouteToMap(Route route) {
         Polyline line = mMap.addPolyline(new PolylineOptions().color(Color.GREEN).width(10));
         line.setPoints(route.latLngList());
@@ -203,5 +214,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         points.set(points.size()-1, point);
         polyLine.setPoints(points);
     }
+
+
 
 }
