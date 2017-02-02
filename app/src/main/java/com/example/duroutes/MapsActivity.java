@@ -154,7 +154,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 //создали роут как объект
                      if (drawRouteButton.isChecked()) {
                          if (routeName.getText().toString().trim().length() > 0) {
-                             Route route = new Route(routeName.getText().toString(), newLine.getPoints());
+                             List<LatLng> line = newLine.getPoints();
+                             line.remove(newLine.getPoints().size()-1); //удаляем последнюю точку
+                             Route route = new Route(routeName.getText().toString(), line);
                              //чтобы публиковать в базу
                              routesReference.push().setValue(route);  //push создаёт id
                              mMap.clear();
