@@ -3,11 +3,16 @@ package com.example.duroutes;
 import android.graphics.Color;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v7.widget.PopupMenu;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -47,6 +52,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private LatLng cameraCenter;
 
     private Toolbar toolbar;
+    private ImageButton imageButton;
     private Spinner spinner;
     private ArrayList<Route> routesData;
     private ArrayAdapter<Route> adapter;
@@ -94,6 +100,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         drawRouteButton.setChecked(false);
         routeName = (EditText)findViewById(R.id.routeName);
         saveButton = (Button)findViewById(R.id.saveButton);
+        imageButton = (ImageButton)findViewById(R.id.imageButton);
 
         // CONNECT WITH FIREBASE
         routesDB = FirebaseDatabase.getInstance();
@@ -218,6 +225,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
+    /*@Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.auth_menu:
+                //mFirebaseAuth.signOut();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }*/
+
 
     private void addRouteToMap(Route route) {
         Polyline line = mMap.addPolyline(new PolylineOptions().color(Color.GREEN).width(10));
@@ -228,6 +254,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         List<LatLng> points = polyLine.getPoints();
         points.set(points.size()-1, point);
         polyLine.setPoints(points);
+    }
+
+    public void showPopup(View v) {
+        PopupMenu popup = new PopupMenu(this, v);
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.main_menu, popup.getMenu());
+        popup.show();
     }
 
 
