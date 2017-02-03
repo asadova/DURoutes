@@ -13,6 +13,8 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 import android.widget.Toolbar;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -75,6 +77,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
         toolbar = (Toolbar)findViewById(R.id.toolbar);
 
+      //  mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        mMap.getUiSettings().setZoomControlsEnabled(true);
+
         routesData = new ArrayList<>();
         adapter = new ArrayAdapter<>(this,
                                      android.R.layout.simple_spinner_item,
@@ -96,6 +102,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //Initialize currentMarker
         currentMarker = null;
         cameraCenter = mMap.getCameraPosition().target;
+
+        //сразу Душанбе показывает
+        LatLng dushanbe = new LatLng(38.563208, 68.797982);
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(dushanbe));
+        CameraUpdate zoom = CameraUpdateFactory.zoomTo(12);
+        mMap.animateCamera(zoom);
 
         // Initial invisibility
         saveButton.setVisibility(View.INVISIBLE);
@@ -166,6 +178,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                              Toast.makeText(getApplicationContext(), "Напишите название маршрута", Toast.LENGTH_LONG).show();
                          }
                     }
+                mMap.clear();
             }
         });
 
