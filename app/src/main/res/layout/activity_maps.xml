@@ -6,19 +6,7 @@ android:layout_width="match_parent"
 android:layout_height="match_parent"
 tools:context="com.example.duroutes.MapsActivity">
 
-<ToggleButton
-    android:text="ToggleButton"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="35dp"
-    android:id="@+id/drawRouteButton"
-    android:layout_marginLeft="13dp"
-    android:layout_marginStart="13dp"
-    android:layout_alignParentBottom="true"
-    android:layout_alignParentLeft="true"
-    android:layout_alignParentStart="true" />
-
-<fragment
+    <fragment
     android:id="@+id/map"
     android:name="com.google.android.gms.maps.SupportMapFragment"
     android:layout_width="match_parent"
@@ -27,16 +15,6 @@ tools:context="com.example.duroutes.MapsActivity">
     android:layout_alignParentLeft="true"
     android:layout_alignParentStart="true" />
 
-
-
-    <Button
-        android:text="сохранить"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/drawRouteButton"
-        android:id="@+id/saveButton"
-        android:layout_alignLeft="@+id/drawRouteButton"
-        android:layout_alignStart="@+id/drawRouteButton" />
 
     <TextView
         android:text="X"
@@ -50,6 +28,27 @@ tools:context="com.example.duroutes.MapsActivity">
         android:id="@+id/tool_bar"
         layout="@layout/toolbar" />
 
+    <ToggleButton
+        android:text="ToggleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/drawRouteButton"
+        android:layout_marginRight="13dp"
+        android:layout_marginEnd="13dp"
+        android:layout_below="@+id/tool_bar"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:text="сохранить"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/saveButton"
+        android:layout_marginLeft="14dp"
+        android:layout_marginStart="14dp"
+        android:layout_below="@+id/tool_bar"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 
 </RelativeLayout>

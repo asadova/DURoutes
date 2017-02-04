@@ -157,6 +157,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     saveButton.setVisibility(View.INVISIBLE);
                     routeName.setVisibility(View.INVISIBLE);
                     clearButton.setVisibility(View.INVISIBLE);
+                    routeName.setText("");
                 }
             }
 
@@ -272,6 +273,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 drawRouteButton.setChecked(false);
                                 drawRouteButton.setVisibility(View.INVISIBLE);
                                 clearButton.setVisibility(View.INVISIBLE);
+                                routeName.setText("");
                                 break;
 
                         }
