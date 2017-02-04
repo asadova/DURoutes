@@ -27,27 +27,16 @@ tools:context="com.example.duroutes.MapsActivity">
     android:layout_alignParentLeft="true"
     android:layout_alignParentStart="true" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:layout_above="@+id/drawRouteButton"
-        android:layout_alignLeft="@+id/drawRouteButton"
-        android:layout_alignStart="@+id/drawRouteButton"
-        android:layout_marginBottom="71dp"
-        android:id="@+id/routeName" />
+
 
     <Button
         android:text="сохранить"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/drawRouteButton"
+        android:id="@+id/saveButton"
         android:layout_alignLeft="@+id/drawRouteButton"
-        android:layout_alignStart="@+id/drawRouteButton"
-        android:layout_marginLeft="11dp"
-        android:layout_marginStart="11dp"
-        android:id="@+id/saveButton" />
+        android:layout_alignStart="@+id/drawRouteButton" />
 
     <TextView
         android:text="X"

@@ -19,7 +19,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 import android.widget.Toolbar;
 
-import com.firebase.ui.auth.AuthUI;
+//import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -49,6 +49,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
       //Captures state of drawRouteButton
     private EditText routeName;
     private Button saveButton;
+    private Button clearButton;
     private Polyline newLine;
 
     private FirebaseDatabase routesDB;
@@ -111,6 +112,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         routeName = (EditText)findViewById(R.id.routeName);
         saveButton = (Button)findViewById(R.id.saveButton);
         imageButton = (ImageButton)findViewById(R.id.imageButton);
+        clearButton = (Button)findViewById(R.id.clearButton);
 
         // CONNECT WITH FIREBASE
         routesDB = FirebaseDatabase.getInstance();
@@ -131,6 +133,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         saveButton.setVisibility(View.INVISIBLE);
         routeName.setVisibility(View.INVISIBLE);
         drawRouteButton.setVisibility(View.INVISIBLE);
+        clearButton.setVisibility(View.INVISIBLE);
+
+        clearButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mMap.clear();
+            }
+        });
 
         //Interface listeners
         drawRouteButton.setOnClickListener(new View.OnClickListener() {
@@ -139,12 +149,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 if (drawRouteButton.isChecked()) {
                     saveButton.setVisibility(View.VISIBLE);
                     routeName.setVisibility(View.VISIBLE);
+                    clearButton.setVisibility(View.VISIBLE);
                     newLine = mMap.addPolyline(new PolylineOptions()
                             .width(5)
                             .color(Color.RED));
                 } else {
                     saveButton.setVisibility(View.INVISIBLE);
                     routeName.setVisibility(View.INVISIBLE);
+                    clearButton.setVisibility(View.INVISIBLE);
                 }
             }
 
@@ -225,6 +237,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                mMap.clear();
                 Route route = adapter.getItem(position);
                 addRouteToMap(route);
             }
@@ -249,8 +262,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             case R.id.auth_menu:  //sign in item
                                 Toast.makeText(getApplicationContext(),
                                         "Signed in", Toast.LENGTH_SHORT).show();
-                                routeName.setVisibility(View.VISIBLE);
-                                saveButton.setVisibility(View.VISIBLE);
                                 drawRouteButton.setVisibility(View.VISIBLE);
                                 break;
                             case R.id.auth_menu2: //sign out item
@@ -258,7 +269,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                         "Signed out", Toast.LENGTH_SHORT).show();
                                 routeName.setVisibility(View.INVISIBLE);
                                 saveButton.setVisibility(View.INVISIBLE);
+                                drawRouteButton.setChecked(false);
                                 drawRouteButton.setVisibility(View.INVISIBLE);
+                                clearButton.setVisibility(View.INVISIBLE);
                                 break;
 
                         }
