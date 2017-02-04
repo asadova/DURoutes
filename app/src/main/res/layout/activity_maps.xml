@@ -59,8 +59,7 @@ tools:context="com.example.duroutes.MapsActivity">
 
     <include
         android:id="@+id/tool_bar"
-        layout="@layout/toolbar"
-        ></include>
+        layout="@layout/toolbar" />
 
 
 

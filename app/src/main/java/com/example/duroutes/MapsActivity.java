@@ -1,6 +1,7 @@
 package com.example.duroutes;
 
 import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v7.widget.PopupMenu;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 import android.widget.Toolbar;
 
+import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -28,6 +30,8 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -35,6 +39,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -48,6 +53,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private FirebaseDatabase routesDB;
     private DatabaseReference routesReference;
+    private FirebaseAuth auth;
+    private FirebaseAuth.AuthStateListener authListener;
+    private PopupMenu popup;
     private Marker currentMarker;
     private LatLng cameraCenter;
 
@@ -56,6 +64,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Spinner spinner;
     private ArrayList<Route> routesData;
     private ArrayAdapter<Route> adapter;
+
+    private static final int RC_SIGN_IN = 1;
 
 
     @Override
@@ -105,6 +115,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // CONNECT WITH FIREBASE
         routesDB = FirebaseDatabase.getInstance();
         routesReference = routesDB.getReference().child("routes");
+        auth = FirebaseAuth.getInstance();
 
         //Initialize currentMarker
         currentMarker = null;
@@ -119,6 +130,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Initial invisibility
         saveButton.setVisibility(View.INVISIBLE);
         routeName.setVisibility(View.INVISIBLE);
+        drawRouteButton.setVisibility(View.INVISIBLE);
 
         //Interface listeners
         drawRouteButton.setOnClickListener(new View.OnClickListener() {
@@ -223,6 +235,64 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                popup = new PopupMenu(MapsActivity.this, view);
+                MenuInflater inflater = popup.getMenuInflater();
+                inflater.inflate(R.menu.main_menu, popup.getMenu());
+                popup.show();
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()){
+                            case R.id.auth_menu:  //sign in item
+                                Toast.makeText(getApplicationContext(),
+                                        "Signed in", Toast.LENGTH_SHORT).show();
+                                routeName.setVisibility(View.VISIBLE);
+                                saveButton.setVisibility(View.VISIBLE);
+                                drawRouteButton.setVisibility(View.VISIBLE);
+                                break;
+                            case R.id.auth_menu2: //sign out item
+                                Toast.makeText(getApplicationContext(),
+                                        "Signed out", Toast.LENGTH_SHORT).show();
+                                routeName.setVisibility(View.INVISIBLE);
+                                saveButton.setVisibility(View.INVISIBLE);
+                                drawRouteButton.setVisibility(View.INVISIBLE);
+                                break;
+
+                        }
+
+                        /*authListener = new FirebaseAuth.AuthStateListener() {
+                            @Override
+                            public void onAuthStateChanged(@NonNull FirebaseAuth auth) {
+                                FirebaseUser mFirebaseUser = auth.getCurrentUser();
+                                //User is signed out
+                                if (mFirebaseUser == null) {
+                                    //   onSignOutCleanUp();
+                                    //Starts sign-in flow
+                                    startActivityForResult(
+                                            AuthUI.getInstance()
+                                                    .createSignInIntentBuilder()
+                                                    .setIsSmartLockEnabled(false)
+                                                    .setProviders(Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
+                                                            new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build()))
+                                                    .build(),
+                                            RC_SIGN_IN); //RC_SIGN_IN - request code
+                                    //User is signed in
+                                } else {
+                                    //    onSignInInit(mFirebaseUser);
+                                    Toast.makeText(MapsActivity.this, "Your are logged in!", Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        };*/
+                        return true;
+                    }
+                });
+               /* auth.addAuthStateListener(authListener);*/
+            }
+        });
+
     }
 
     /*@Override
@@ -255,14 +325,5 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         points.set(points.size()-1, point);
         polyLine.setPoints(points);
     }
-
-    public void showPopup(View v) {
-        PopupMenu popup = new PopupMenu(this, v);
-        MenuInflater inflater = popup.getMenuInflater();
-        inflater.inflate(R.menu.main_menu, popup.getMenu());
-        popup.show();
-    }
-
-
 
 }

@@ -4,4 +4,6 @@
 
     <item android:title="Sign in"
         android:id="@+id/auth_menu" />
+    <item android:title="Sign out"
+        android:id="@+id/auth_menu2" />
 </menu>
