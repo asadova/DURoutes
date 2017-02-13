@@ -20,6 +20,7 @@ import android.widget.ToggleButton;
 import android.widget.Toolbar;
 
 //import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -250,6 +251,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
+        auth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if(auth.getCurrentUser() != null){
+                    drawRouteButton.setVisibility(View.VISIBLE);
+                }
+            }
+        });
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -262,50 +271,44 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()){
                             case R.id.auth_menu:  //sign in item
-                                Toast.makeText(getApplicationContext(),
-                                        "Signed in", Toast.LENGTH_SHORT).show();
-                                drawRouteButton.setVisibility(View.VISIBLE);
+                                authListener = new FirebaseAuth.AuthStateListener() {
+                                    @Override
+                                    public void onAuthStateChanged(@NonNull FirebaseAuth auth) {
+                                        FirebaseUser mFirebaseUser = auth.getCurrentUser();
+                                        //User is signed out
+                                        if (mFirebaseUser == null) {
+                                            //   onSignOutCleanUp();
+                                            //Starts sign-in flow
+                                            startActivityForResult(
+                                                    AuthUI.getInstance()
+                                                            .createSignInIntentBuilder()
+                                                            .setIsSmartLockEnabled(false)
+                                                            .setProviders(Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
+                                                                    new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build()))
+                                                            .build(),
+                                                    RC_SIGN_IN); //RC_SIGN_IN - request code
+                                            //User is signed in
+                                        } else {
+                                            //    onSignInInit(mFirebaseUser);
+                                            Toast.makeText(MapsActivity.this, "Your are logged in!", Toast.LENGTH_LONG).show();
+                                            drawRouteButton.setVisibility(View.VISIBLE);
+                                        }
+                                    }
+                                };
+                                auth.addAuthStateListener(authListener);
                                 break;
                             case R.id.auth_menu2: //sign out item
-                                Toast.makeText(getApplicationContext(),
-                                        "Signed out", Toast.LENGTH_SHORT).show();
-                                routeName.setVisibility(View.INVISIBLE);
-                                saveButton.setVisibility(View.INVISIBLE);
+                                auth.signOut();
+                                Toast.makeText(getApplicationContext(),"Signed out", Toast.LENGTH_SHORT).show();
                                 drawRouteButton.setChecked(false);
                                 drawRouteButton.setVisibility(View.INVISIBLE);
-                                clearButton.setVisibility(View.INVISIBLE);
-                                routeName.setText("");
                                 break;
 
                         }
-
-                        /*authListener = new FirebaseAuth.AuthStateListener() {
-                            @Override
-                            public void onAuthStateChanged(@NonNull FirebaseAuth auth) {
-                                FirebaseUser mFirebaseUser = auth.getCurrentUser();
-                                //User is signed out
-                                if (mFirebaseUser == null) {
-                                    //   onSignOutCleanUp();
-                                    //Starts sign-in flow
-                                    startActivityForResult(
-                                            AuthUI.getInstance()
-                                                    .createSignInIntentBuilder()
-                                                    .setIsSmartLockEnabled(false)
-                                                    .setProviders(Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
-                                                            new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build()))
-                                                    .build(),
-                                            RC_SIGN_IN); //RC_SIGN_IN - request code
-                                    //User is signed in
-                                } else {
-                                    //    onSignInInit(mFirebaseUser);
-                                    Toast.makeText(MapsActivity.this, "Your are logged in!", Toast.LENGTH_LONG).show();
-                                }
-                            }
-                        };*/
                         return true;
                     }
                 });
-               /* auth.addAuthStateListener(authListener);*/
+
             }
         });
 
