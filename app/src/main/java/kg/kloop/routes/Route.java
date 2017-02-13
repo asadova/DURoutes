@@ -1,7 +1,6 @@
-package com.example.duroutes;
+package kg.kloop.routes;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Polyline;
 
 import java.util.ArrayList;
 import java.util.List;

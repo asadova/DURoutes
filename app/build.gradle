@@ -12,11 +12,13 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.1"
     defaultConfig {
-        applicationId "com.example.duroutes"
+        applicationId "kg.kloop.routes"
         minSdkVersion 16
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
+
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -36,7 +38,9 @@ dependencies {
     compile 'com.google.android.gms:play-services:10.0.1'
     compile 'com.google.firebase:firebase-database:10.0.1'
     compile 'com.google.firebase:firebase-auth:10.0.1'
+    compile 'com.android.support:multidex:1.0.1'
     compile 'com.firebaseui:firebase-ui-auth:1.0.1'
+
     testCompile 'junit:junit:4.12'
 }
 

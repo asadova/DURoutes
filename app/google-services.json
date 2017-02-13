@@ -15,6 +15,102 @@
       },
       "oauth_client": [
         {
+          "client_id": "121613722538-doa59fneh16ums5dd4ctjsfccfe2gvma.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.duroutes",
+            "certificate_hash": "4465B19A0F3E2F6A256C1645B8020B8B343F0B88"
+          }
+        },
+        {
+          "client_id": "121613722538-h3e8m9b30djnf3o6fml9520o1grkcome.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjFOvmYyEITXswukQSafiac1v-bL4XLmU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "121613722538-h3e8m9b30djnf3o6fml9520o1grkcome.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:121613722538:android:feed066b5aa9a75a",
+        "android_client_info": {
+          "package_name": "com.project.duroutes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "121613722538-phq1j1qg7h7v238o4938ad9dnmb0m345.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.project.duroutes",
+            "certificate_hash": "E0A9582FCD0496287E6EDB1BCA4A4A5577130018"
+          }
+        },
+        {
+          "client_id": "121613722538-h3e8m9b30djnf3o6fml9520o1grkcome.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjFOvmYyEITXswukQSafiac1v-bL4XLmU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "121613722538-h3e8m9b30djnf3o6fml9520o1grkcome.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:121613722538:android:4e1b1726c5c9eb55",
+        "android_client_info": {
+          "package_name": "kg.kloop.routes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "121613722538-2fun824srbgv73plmrs8gmbev3kas72s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "kg.kloop.routes",
+            "certificate_hash": "AD381AA809AA1F930017A0A2A7FE81995089DBAE"
+          }
+        },
+        {
           "client_id": "121613722538-h3e8m9b30djnf3o6fml9520o1grkcome.apps.googleusercontent.com",
           "client_type": 3
         }

@@ -1,4 +1,4 @@
-package com.example.duroutes;
+package kg.kloop.routes;
 
 /**
  * Created by Нигина on 01.02.2017.

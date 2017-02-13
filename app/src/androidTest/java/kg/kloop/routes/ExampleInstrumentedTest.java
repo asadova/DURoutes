@@ -1,4 +1,4 @@
-package com.example.duroutes;
+package kg.kloop.routes;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.example.duroutes", appContext.getPackageName());
+        assertEquals("com.kg.kg.routes", appContext.getPackageName());
     }
 }

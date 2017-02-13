@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.duroutes">
+    package="com.unesco.routes">
 
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
@@ -29,7 +29,7 @@
             android:value="AIzaSyDFyk3WIP2MKR9xcg-iuOcDPMFk3NCxdoE" />
 
         <activity
-            android:name=".MapsActivity"
+            android:name="kg.kloop.routes.MapsActivity"
             android:label="@string/title_activity_maps">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

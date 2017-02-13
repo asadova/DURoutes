@@ -1,4 +1,4 @@
-package com.example.duroutes;
+package kg.kloop.routes;
 
 import org.junit.Test;
 
