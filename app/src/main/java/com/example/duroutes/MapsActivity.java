@@ -313,27 +313,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
 
     }
-
-    /*@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-        switch (item.getItemId()) {
-            case R.id.auth_menu:
-                //mFirebaseAuth.signOut();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }*/
-
-
     private void addRouteToMap(Route route) {
         Polyline line = mMap.addPolyline(new PolylineOptions().color(Color.GREEN).width(10));
         line.setPoints(route.latLngList());
